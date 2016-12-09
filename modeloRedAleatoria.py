@@ -1,11 +1,11 @@
 import argparse
 import random
 
-#anadir al parseo la opcion de ficheros de salida
-
+#default name of output files
 NODESFILE = "nodes.csv"
 EDGESFILE = "edges.csv"
 
+#data entry restriction functions
 def restricted_float(x):
     x = float(x)
     if x < 0.0 or x > 1.0:
@@ -28,6 +28,11 @@ parser.add_argument('--probability','-p',
                     type=restricted_float,
                     help='probability to generate edge',
                     required=True)
+parser.add_argument('--output-files', '-of',
+                    type=str,
+                    nargs=2,
+                    default=[NODESFILE,EDGESFILE],
+                    help='output names file')
 args = parser.parse_args()
 
 listNodes = []
@@ -37,22 +42,21 @@ for i in range(args.nodes):
     listNodes.append(i)
     for j in range(i+1, args.nodes):
         #random int between 0 <= x <= 10;
-        if args.probability*10 > 0 and random.randint(0,10) <= args.probability
+        if args.probability*10 > 0 and random.randint(0,10) <= args.probability:
             listAristas.append([i,j])
 
     # Write Nodes File
-    nodesFile = open(NODESFILE, 'w')
+    nodesFile = open(args.output_files[0], 'w')
     nodesFile.write("Id\n")
     for i in listNodes:
         nodesFile.write(str(i)+'\n')
     nodesFile.close()
 
     #Write Edges Nodes File
-    edgesFile = open(EDGESFILE, 'w')
+    edgesFile = open(args.output_files[1], 'w')
     edgesFile.write("Source;Target;Type\n")
     for i in listAristas:
         edgesFile.write(str(i[0]) + ";")
         edgesFile.write(str(i[1]) + ";")
         edgesFile.write("Undirected\n")
-
     edgesFile.close()
