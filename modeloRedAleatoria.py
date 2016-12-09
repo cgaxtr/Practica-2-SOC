@@ -35,28 +35,28 @@ parser.add_argument('--output-files', '-of',
                     help='output names file')
 args = parser.parse_args()
 
-listNodes = []
-listAristas = []
+nodesList = []
+edgesList = []
 
 for i in range(args.nodes):
-    listNodes.append(i)
+    nodesList.append(i)
     for j in range(i+1, args.nodes):
         #random int between 0 <= x <= 10;
-        if args.probability*10 > 0 and random.randint(0,10) <= args.probability:
-            listAristas.append([i,j])
+        if args.probability*10 > 0 and random.randint(0,10) <= args.probability*10:
+            edgesList.append([i,j])
 
-    # Write Nodes File
-    nodesFile = open(args.output_files[0], 'w')
-    nodesFile.write("Id\n")
-    for i in listNodes:
-        nodesFile.write(str(i)+'\n')
-    nodesFile.close()
+# Write Nodes File
+nodesFile = open(args.output_files[0], 'w')
+nodesFile.write("Id\n")
+for i in nodesList:
+    nodesFile.write(str(i)+'\n')
+nodesFile.close()
 
-    #Write Edges Nodes File
-    edgesFile = open(args.output_files[1], 'w')
-    edgesFile.write("Source;Target;Type\n")
-    for i in listAristas:
-        edgesFile.write(str(i[0]) + ";")
-        edgesFile.write(str(i[1]) + ";")
-        edgesFile.write("Undirected\n")
-    edgesFile.close()
+#Write Edges File
+edgesFile = open(args.output_files[1], 'w')
+edgesFile.write("Source;Target;Type\n")
+for i in edgesList:
+    edgesFile.write(str(i[0]) + ";")
+    edgesFile.write(str(i[1]) + ";")
+    edgesFile.write("Undirected\n")
+edgesFile.close()
