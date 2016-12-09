@@ -2,7 +2,9 @@ import argparse
 import random
 import collections
 
-#anadir al parseo la opcion de ficheros de salida
+#default name of output files
+NODESFILE = "nodes.csv"
+EDGESFILE = "edges.csv"
 
 def restricted_positive(x):
     x = int(x)
@@ -19,6 +21,11 @@ parser.add_argument('--time', '-t',
                     type=restricted_positive,
                     help='number of execution steps',
                     required=True)
+parser.add_argument('--output-files', '-of',
+                    type=str,
+                    nargs=2,
+                    default=[NODESFILE,EDGESFILE],
+                    help='output names file')
 args = parser.parse_args()
 
 edgeList = [] #edges are defined such as vector[origin,destination]
@@ -37,24 +44,16 @@ for i in range(args.links + 1):
         nodesDict[i] = nodesDict.get(i) + 1
         nodesDict[j] = nodesDict.get(j) + 1
         totalGrade += 2
-#debug
-print "<-----------INICIO----------->"
-print nodesDict
-print edgeList
 
 #execute steps
-for i in range(args.time):
+for i in range(args.time - args.links):
     nodesLinked = [] #Nodes that have been linked
 
     newNode = len(nodesDict) #new node id
     nodesDict[newNode] = 0 #adding new node
     
-    #debug
-    print "<-----------ITER" + str(i) + "----------->"
-    
     while(len(nodesLinked) < args.links):
         randomInt = random.randint(0,totalGrade-1)
-        print "randomInt" + str(randomInt)
         key = 1; #key to dict access
         probabilityAcumulated = nodesDict.get(0)
         while probabilityAcumulated < randomInt:
@@ -65,10 +64,21 @@ for i in range(args.time):
             nodesLinked.append(key-1)
             nodesDict[newNode] = nodesDict.get(newNode) + 1
             nodesDict[key-1] = nodesDict.get(key-1) + 1
-
     totalGrade += args.links*2
 
-    #debug
-    print nodesDict
-    print edgeList
-# save data
+#Write Nodes File
+nodesFile = open(args.output_files[0], 'w')
+nodesFile.write("Id\n")
+for key in nodesDict.iterkeys():
+    print key
+    nodesFile.write(str(key) + '\n')
+nodesFile.close() 
+
+#Write Edges Nodes File
+edgesFile = open(args.output_files[1], 'w')
+edgesFile.write("Source;Target;Type\n")
+for i in edgeList:
+    edgesFile.write(str(i[0]) + ";")
+    edgesFile.write(str(i[1]) + ";")
+    edgesFile.write("Undirected\n")
+edgesFile.close()
