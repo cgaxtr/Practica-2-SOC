@@ -32,7 +32,7 @@ parser.add_argument('--output-files', '-of',
                     type=str,
                     nargs=2,
                     default=[NODESFILE,EDGESFILE],
-                    help='output names file')
+                    help='output names file "1st nodesFile.csv 2nd edgesFile.csv"')
 args = parser.parse_args()
 
 nodesList = []

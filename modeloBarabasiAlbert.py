@@ -25,7 +25,7 @@ parser.add_argument('--output-files', '-of',
                     type=str,
                     nargs=2,
                     default=[NODESFILE,EDGESFILE],
-                    help='output names file')
+                    help='output names file "1st nodesFile.csv 2nd edgesFile.csv"')
 args = parser.parse_args()
 
 edgeList = [] #edges are defined such as vector[origin,destination]
@@ -70,7 +70,6 @@ for i in range(args.time - args.links):
 nodesFile = open(args.output_files[0], 'w')
 nodesFile.write("Id\n")
 for key in nodesDict.iterkeys():
-    print key
     nodesFile.write(str(key) + '\n')
 nodesFile.close() 
 
