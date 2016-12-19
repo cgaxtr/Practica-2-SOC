@@ -42,7 +42,7 @@ for i in range(args.nodes):
     nodesList.append(i)
     for j in range(i+1, args.nodes):
         #random int between 0 <= x <= 10;
-        if args.probability*10 > 0 and random.randint(0,10) <= args.probability*10:
+        if args.probability > 0 and random.random() <= args.probability:
             edgesList.append([i,j])
 
 # Write Nodes File

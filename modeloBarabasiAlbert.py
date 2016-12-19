@@ -73,7 +73,7 @@ for key in nodesDict.iterkeys():
     nodesFile.write(str(key) + '\n')
 nodesFile.close() 
 
-#Write Edges Nodes File
+#Write Edges File
 edgesFile = open(args.output_files[1], 'w')
 edgesFile.write("Source;Target;Type\n")
 for i in edgeList:
